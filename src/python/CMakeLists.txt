@@ -2,6 +2,15 @@
 #   Mitsuba python library
 # ----------------------------------------------------------
 
+if (SKBUILD)
+  # Enable LTO only for release builds targeting PyPI (~5% binary size reduction)
+  set(MI_DIST_FLAGS LTO)
+
+  if (MI_STABLE_ABI)
+    list(APPEND MI_DIST_FLAGS STABLE_ABI)
+  endif()
+endif()
+
 include_directories(
   ${PNG_INCLUDE_DIRS}
   ${PUGIXML_INCLUDE_DIRS}
@@ -20,6 +29,8 @@ foreach (MI_VARIANT ${MI_VARIANTS})
 
   nanobind_add_module(${TARGET_NAME}
       NB_DOMAIN drjit
+      NB_STATIC
+      ${MI_DIST_FLAGS}
       main_v.cpp
       ${CORE_PY_V_SRC}
       ${RENDER_PY_V_SRC}
@@ -48,6 +59,8 @@ endforeach()
 
 nanobind_add_module(mitsuba_ext
   NB_DOMAIN drjit
+  NB_STATIC
+  ${MI_DIST_FLAGS}
   main.cpp
   ${CORE_PY_SRC}
   ${RENDER_PY_SRC}
@@ -55,6 +68,8 @@ nanobind_add_module(mitsuba_ext
 
 nanobind_add_module(mitsuba_alias
   NB_DOMAIN drjit
+  NB_STATIC
+  ${MI_DIST_FLAGS}
   alias.cpp
 )
 
@@ -190,67 +205,6 @@ endif()
 #   Generate type information stubs (mitsuba)
 # ----------------------------------------------------------
 
-set(STUB_ARGS
-  PYTHON_PATH ${MI_BINARY_DIR}/python
-  PATTERN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/stubs.pat
-  DEPENDS ${MI_STUB_DEPENDS}
-)
-
-# The sanitizers require preloading shared libraries into Python, and that
-# doesn't play well with stub generation. Disable stubs if sanitizers are
-# enabled.
-if (NOT (MI_SANITIZE_ADDRESS OR MI_SANITIZE_MEMORY))
-
-  set(MI_STUB_SUBMODULES "math" "quad" "spline" "mueller" "warp" "misc"
-                         "python.ad" "python.chi2" "python.math_py" "python.util" "python.xml")
-
-  nanobind_add_stub(
-    mitsuba-stub
-    MODULE mitsuba.mitsuba_stubs
-    OUTPUT ${MI_BINARY_DIR}/python/mitsuba/stubs.pyi
-    MARKER_FILE ${MI_BINARY_DIR}/python/mitsuba/py.typed
-    ${STUB_ARGS}
-  )
-
-  add_custom_command(
-    OUTPUT ${MI_BINARY_DIR}/python/mitsuba/__init__.pyi
-    DEPENDS ${MI_BINARY_DIR}/python/mitsuba/stubs.pyi
-    COMMAND cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/variant-stub.cmake
-      ${MI_BINARY_DIR}/python/mitsuba/stubs.pyi
-      ${MI_BINARY_DIR}/python/mitsuba/__init__.pyi
-  )
-
-  set(MI_STUB_TARGET_DEPS
-    ${MI_BINARY_DIR}/python/mitsuba/__init__.pyi
-    ${MI_BINARY_DIR}/python/mitsuba/py.typed)
-
-  foreach (value ${MI_STUB_SUBMODULES})
-    string(REPLACE "." "/" value_path ${value})
-    nanobind_add_stub(
-      mitsuba-stub-${value}
-      MODULE mitsuba.mitsuba_stubs.${value}
-      OUTPUT ${MI_BINARY_DIR}/python/mitsuba/${value_path}_stubs.pyi
-      ${STUB_ARGS}
-    )
-
-    add_custom_command(
-      OUTPUT ${MI_BINARY_DIR}/python/mitsuba/${value_path}.pyi
-      DEPENDS ${MI_BINARY_DIR}/python/mitsuba/${value_path}_stubs.pyi
-      COMMAND cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/variant-stub.cmake
-        ${MI_BINARY_DIR}/python/mitsuba/${value_path}_stubs.pyi
-        ${MI_BINARY_DIR}/python/mitsuba/${value_path}.pyi
-    )
-
-    list(APPEND MI_STUB_TARGET_DEPS ${MI_BINARY_DIR}/python/mitsuba/${value_path}.pyi)
-  endforeach()
-
-  add_custom_target(
-    mitsuba-stubs
-    ALL
-    DEPENDS ${MI_STUB_TARGET_DEPS}
-  )
-
-endif()
 
 
 # ----------------------------------------------------------
