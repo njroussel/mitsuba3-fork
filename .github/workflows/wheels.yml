@@ -50,6 +50,7 @@ jobs:
 
         # We need LLVM for stub generation
       - name: Install LLVM and Clang
+        if: ${{ runner.os != 'macOS' }}
         uses: KyleMayes/install-llvm-action@v2
         with:
           version: "17.0"
@@ -57,12 +58,12 @@ jobs:
       - name: Set DRJIT_LIBLLVM_PATH (Unix)
         if: ${{ runner.os != 'Windows' }}
         run: |
-          echo "DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}/lib/libLLVM-17.so" >> $GITHUB_ENV
+          echo "CIBW_ENVIRONMENT_LINUX=\"DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}/lib/libLLVM-17.so\"" >> $GITHUB_ENV
 
       - name: Set DRJIT_LIBLLVM_PATH (Windows)
         if: ${{ runner.os == 'Windows' }}
         run: |
-          echo "DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}\bin\LLVM-C.dll" >> $env:GITHUB_ENV
+          echo "CIBW_ENVIRONMENT_WINDOWS='DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}\bin\LLVM-C.dll'" >> $env:GITHUB_ENV
 
       - name: Prepare compiler environment for Windows
         if: runner.os == 'Windows'
