@@ -157,8 +157,10 @@ NB_MODULE(MI_VARIANT_NAME, m) {
     m.attr("is_spectral") = is_spectral_v<Spectrum>;
     m.attr("is_polarized") = is_polarized_v<Spectrum>;
 
-    color_management_static_initialization(dr::is_cuda_v<Float>,
-                                           dr::is_llvm_v<Float>);
+    try {
+        color_management_static_initialization(dr::is_cuda_v<Float>,
+                                               dr::is_llvm_v<Float>);
+    } catch(...) {}
     Scene::static_accel_initialization();
 
     MI_PY_IMPORT(Object);

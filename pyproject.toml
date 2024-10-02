@@ -15,8 +15,7 @@ dynamic = ["version", "readme"]
 description = "Mitsuba 3: A Retargetable Forward and Inverse Renderer"
 readme = "README.md"
 dependencies = [
-  "typing_extensions;python_version<\"3.11\"",
-  "throwaway8213fork"
+  "typing_extensions;python_version<\"3.11\""
 ]
 requires-python = ">=3.8"
 authors = [
@@ -51,6 +50,8 @@ build-verbosity = 1
 build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
 archs = ["auto64"]
 skip = "*-musllinux* pp*"
+
+before-all = "python -m pip install --index-url https://test.pypi.org/simple/ throwaway8213fork"
 
 # Try to import the package to see if it was built correctly (compromise)
 test-command = "python -c \"import mitsuba\""

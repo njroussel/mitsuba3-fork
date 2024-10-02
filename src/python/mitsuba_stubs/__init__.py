@@ -34,13 +34,13 @@ def stub_variant() -> str:
 
 v = stub_variant()
 
-try:
-    mi.set_variant(v)
-except ImportError:
+if v not in mi.variants():
     raise ImportError(f'Based on chosen set of Mitsuba variants, variant {v} ' 
                        'is required for stub generation. Please modify your '
                        'mitsuba.conf file to include this variant and recompile '
                        'Mitsuba.')
+
+mi.set_variant(v)
 
 sys.modules[__name__] = sys.modules['mitsuba']
 sys.modules[__name__ +'.math']      = mi.math

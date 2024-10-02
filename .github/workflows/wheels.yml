@@ -48,13 +48,6 @@ jobs:
         with:
           python-version: '3.10'
 
-        # We need LLVM for stub generation
-      - name: Install LLVM and Clang
-        if: ${{ runner.os != 'macOS' }}
-        uses: KyleMayes/install-llvm-action@v2
-        with:
-          version: "17.0"
-
       - name: Prepare compiler environment for Windows
         if: runner.os == 'Windows'
         uses: ilammy/msvc-dev-cmd@v1
@@ -98,9 +91,6 @@ jobs:
       # Build and store wheels
       #########################
       - name: Build wheel
-        env:
-          CIBW_ENVIRONMENT_LINUX: DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}/lib/libLLVM-17.so
-          CIBW_ENVIRONMENT_WINDOWS: DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}\bin\LLVM-C.dll
         run: |
           python -m cibuildwheel --output-dir wheelhouse
 
