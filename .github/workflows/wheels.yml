@@ -48,10 +48,21 @@ jobs:
         with:
           python-version: '3.10'
 
+        # We need LLVM for stub generation
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v2
         with:
           version: "11.0"
+
+      - name: Set DRJIT_LIBLLVM_PATH (Unix)
+        if: ${{ runner.os != 'Windows' }}
+        run: |
+          echo "DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}/lib/libLLVM-11.so" >> $GITHUB_ENV
+
+      - name: Set DRJIT_LIBLLVM_PATH (Windows)
+        if: ${{ runner.os == 'Windows' }}
+        run: |
+          echo "DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}\bin\LLVM-C.dll" >> $env:GITHUB_ENV
 
       - name: Prepare compiler environment for Windows
         if: runner.os == 'Windows'
