@@ -62,7 +62,7 @@ before-all = "python -m pip install --index-url https://test.pypi.org/simple/ th
 MACOSX_DEPLOYMENT_TARGET = "10.14"
 
 [tool.cibuildwheel.linux]
-before-all = "yum install -y libatomic"
+before-all = "yum install -y libatomic && python -m pip install wheel"
 
 
 [tool.pytest.ini_options]
