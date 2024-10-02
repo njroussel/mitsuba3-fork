@@ -107,7 +107,7 @@ jobs:
       # Build and store wheels
       #########################
       - name: Build wheel
-        env: |
+        env:
           DRJIT_LIBLLVM_PATH: ${{ env.DRJIT_LIBLLVM_PATH }}
         run: |
           python -m cibuildwheel --output-dir wheelhouse
