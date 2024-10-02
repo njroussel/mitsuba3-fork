@@ -55,12 +55,12 @@ jobs:
       - name: Set DRJIT_LIBLLVM_PATH (Linux)
         if: ${{ runner.os == 'Linux' }}
         run: |
-          echo "CIBW_ENVIRONMENT=\"DRJIT_LIBLLVM_PATH=\"${{ env.LLVM_PATH }}/lib/libLLVM-17.so\"\"" >> $GITHUB_ENV
+          echo "CIBW_ENVIRONMENT=DRJIT_LIBLLVM_PATH=\"${{ env.LLVM_PATH }}/lib/libLLVM-17.so\"" >> $GITHUB_ENV
 
       - name: Set DRJIT_LIBLLVM_PATH (Windows)
         if: ${{ runner.os == 'Windows' }}
         run: |
-          echo "CIBW_ENVIRONMENT=DRJIT_LIBLLVM_PATH=`"${{ env.LLVM_PATH }}\bin\LLVM-C.dll\`"" >> $env:GITHUB_ENV
+          echo "CIBW_ENVIRONMENT=DRJIT_LIBLLVM_PATH=`"${{ env.LLVM_PATH }}\bin\LLVM-C.dll`"" >> $env:GITHUB_ENV
 
       - name: Prepare compiler environment for Windows
         if: runner.os == 'Windows'
