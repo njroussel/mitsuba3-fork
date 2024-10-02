@@ -16,7 +16,6 @@ description = "Mitsuba 3: A Retargetable Forward and Inverse Renderer"
 readme = "README.md"
 dependencies = [
   "typing_extensions;python_version<\"3.11\"",
-  "throwaway8213fork"
 ]
 requires-python = ">=3.8"
 authors = [
@@ -53,7 +52,7 @@ archs = ["auto64"]
 skip = "*-musllinux* pp*"
 
 # Try to import the package to see if it was built correctly (compromise)
-test-command = "python -c \"import mitsuba\""
+test-command = "pip install --index-url https://test.pypi.org/simple/ throwaway8213fork==1.0.16 && python -c \"import mitsuba\""
 
 [tool.cibuildwheel.macos]
 repair-wheel-command = "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} --ignore-missing-dependencies {wheel}"
