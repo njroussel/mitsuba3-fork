@@ -52,12 +52,12 @@ jobs:
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v2
         with:
-          version: "11.0"
+          version: "17.0"
 
       - name: Set DRJIT_LIBLLVM_PATH (Unix)
         if: ${{ runner.os != 'Windows' }}
         run: |
-          echo "DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}/lib/libLLVM-11.so" >> $GITHUB_ENV
+          echo "DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}/lib/libLLVM-17.so" >> $GITHUB_ENV
 
       - name: Set DRJIT_LIBLLVM_PATH (Windows)
         if: ${{ runner.os == 'Windows' }}
@@ -107,6 +107,8 @@ jobs:
       # Build and store wheels
       #########################
       - name: Build wheel
+        env: |
+          DRJIT_LIBLLVM_PATH: ${{ env.DRJIT_LIBLLVM_PATH }}
         run: |
           python -m cibuildwheel --output-dir wheelhouse
 
