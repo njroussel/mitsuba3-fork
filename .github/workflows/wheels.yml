@@ -55,16 +55,6 @@ jobs:
         with:
           version: "17.0"
 
-      - name: Set DRJIT_LIBLLVM_PATH (Unix)
-        if: ${{ runner.os != 'Windows' }}
-        run: |
-          echo "CIBW_ENVIRONMENT_LINUX=\"DRJIT_LIBLLVM_PATH=\"${{ env.LLVM_PATH }}/lib/libLLVM-17.so\"\"" >> $GITHUB_ENV
-
-      - name: Set DRJIT_LIBLLVM_PATH (Windows)
-        if: ${{ runner.os == 'Windows' }}
-        run: |
-          echo "CIBW_ENVIRONMENT_WINDOWS='DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}\bin\LLVM-C.dll'" >> $env:GITHUB_ENV
-
       - name: Prepare compiler environment for Windows
         if: runner.os == 'Windows'
         uses: ilammy/msvc-dev-cmd@v1
@@ -108,6 +98,9 @@ jobs:
       # Build and store wheels
       #########################
       - name: Build wheel
+        env:
+          CIBW_ENVIRONMENT_LINUX: DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}/lib/libLLVM-17.so
+          CIBW_ENVIRONMENT_WINDOWS: DRJIT_LIBLLVM_PATH=${{ env.LLVM_PATH }}\bin\LLVM-C.dll
         run: |
           python -m cibuildwheel --output-dir wheelhouse
 
