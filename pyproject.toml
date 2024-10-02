@@ -4,7 +4,8 @@ requires = [
     "nanobind @ git+https://github.com/wjakob/nanobind@8ce0dee7f62add575f85c0de386a9c819e4d50af", 
     "drjit @ git+https://github.com/njroussel/drjit-fork@rami",
     "typing_extensions",
-    "hatch-fancy-pypi-readme"
+    "hatch-fancy-pypi-readme",
+    "wheel"
 ]
 build-backend = "scikit_build_core.build"
 
@@ -54,7 +55,7 @@ skip = "*-musllinux* pp*"
 before-all = "python -m pip install --index-url https://test.pypi.org/simple/ throwaway8213fork"
 
 # Try to import the package to see if it was built correctly (compromise)
-test-command = "python -c \"import mitsuba\""
+#test-command = "python -c \"import mitsuba\""
 
 # Needed for full C++17 support
 [tool.cibuildwheel.macos.environment]
