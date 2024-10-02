@@ -82,7 +82,7 @@ jobs:
         run: |
           $stable_cp = '${{ matrix.python }}' -split '_'
           echo "CIBW_BUILD=$($stable_cp[0])-*" >> $env:GITHUB_ENV
-          echo "CIBW_CONFIG_SETTINGS=wheel.py-api=cp312 cmake.args=\"-DDRJIT_STABLE_ABI=ON -DMI_STABLE_ABI=ON\"" >> $env:GITHUB_ENV
+          echo "CIBW_CONFIG_SETTINGS=wheel.py-api=cp312 cmake.args='-DDRJIT_STABLE_ABI=ON -DMI_STABLE_ABI=ON'" >> $env:GITHUB_ENV
 
 
       #########################
