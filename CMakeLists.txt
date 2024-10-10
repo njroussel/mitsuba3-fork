@@ -23,7 +23,7 @@ option(MI_ENABLE_PYTHON "Build Python bindings for Mitsuba, Dr.Jit, and NanoGUI?
 # desired, Embree (which tends to be quite a bit faster) can be used instead.
 # Embree lacks some features provided by Mitsuba 3, like support for double
 # precision arithmetic.
-option(MI_ENABLE_EMBREE  "Use Embree for ray tracing operations?" ON)
+option(MI_ENABLE_EMBREE  "Use Embree for ray tracing operations?" OFF)
 
 # Use GCC/Clang address sanitizer?
 # NOTE: To use this in conjunction with Python plugin, you will need to call

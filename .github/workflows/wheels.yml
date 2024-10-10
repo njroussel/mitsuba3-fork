@@ -7,11 +7,6 @@ on:
         required: true
         default: '0'
 
-env:
-  CIBW_REPAIR_WHEEL_COMMAND_LINUX: "python .github/workflows/tag_wheel_manylinux.py {wheel} {dest_dir}"
-  CIBW_REPAIR_WHEEL_COMMAND_MACOS: "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} --ignore-missing-dependencies {wheel}"
-
-
 jobs:
   build_wheels:
     strategy:
@@ -115,4 +110,5 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@v1.10.2
         with:
           user: __token__
+          repository-url: https://test.pypi.org/legacy/
           password: ${{ secrets.PYPI_PASSWORD }}
