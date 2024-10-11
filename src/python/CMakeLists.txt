@@ -65,14 +65,10 @@ if (STABLE_ABI IN_LIST MI_DIST_FLAGS)
     set(nanobind_lib_name "${nanobind_lib_name}-abi3")
 endif()
 set(nanobind_lib_name "${nanobind_lib_name}-${MI_NB_DOMAIN}") # Append domain name
-
 set_target_properties(${nanobind_lib_name}
   PROPERTIES
-  LIBRARY_OUTPUT_DIRECTORY                ${MI_BINARY_DIR}/python/mitsuba
-  LIBRARY_OUTPUT_DIRECTORY_RELEASE        ${MI_BINARY_DIR}/python/mitsuba
-  LIBRARY_OUTPUT_DIRECTORY_DEBUG          ${MI_BINARY_DIR}/python/mitsuba
-  LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ${MI_BINARY_DIR}/python/mitsuba
-  LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL     ${MI_BINARY_DIR}/python/mitsuba
+  LIBRARY_OUTPUT_DIRECTORY ${MI_BINARY_DIR}/python/mitsuba
+  RUNTIME_OUTPUT_DIRECTORY ${MI_BINARY_DIR}/python/mitsuba
   FOLDER python
 )
 install(TARGETS ${nanobind_lib_name}
