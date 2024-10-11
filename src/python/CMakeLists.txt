@@ -2,6 +2,7 @@
 #   Mitsuba python library
 # ----------------------------------------------------------
 
+  set(MI_DIST_FLAGS "")
 if (SKBUILD)
   # Enable LTO only for release builds targeting PyPI (~5% binary size reduction)
   set(MI_DIST_FLAGS LTO)
@@ -10,6 +11,8 @@ if (SKBUILD)
     list(APPEND MI_DIST_FLAGS STABLE_ABI)
   endif()
 endif()
+
+set(MI_NB_DOMAIN drjit)
 
 include_directories(
   ${PNG_INCLUDE_DIRS}
@@ -28,7 +31,7 @@ foreach (MI_VARIANT ${MI_VARIANTS})
   set(TARGET_NAME ${MI_VARIANT_NAME})
 
   nanobind_add_module(${TARGET_NAME}
-      NB_DOMAIN drjit
+      NB_DOMAIN ${MI_NB_DOMAIN}
       NB_SHARED
       ${MI_DIST_FLAGS}
       main_v.cpp
@@ -56,6 +59,21 @@ foreach (MI_VARIANT ${MI_VARIANTS})
       LIBRARY DESTINATION mitsuba
   )
 endforeach()
+
+set(nanobind_lib_name "nanobind")
+if (STABLE_ABI IN_LIST MI_DIST_FLAGS)
+    set(nanobind_lib_name "${nanobind_lib_name}-abi3")
+endif()
+set(nanobind_lib_name "${nanobind_lib_name}-${MI_NB_DOMAIN}") # Append domain name
+
+set_target_properties(${nanobind_lib_name}
+  PROPERTIES
+  LIBRARY_OUTPUT_DIRECTORY                ${MI_BINARY_DIR}/python/mitsuba
+  LIBRARY_OUTPUT_DIRECTORY_RELEASE        ${MI_BINARY_DIR}/python/mitsuba
+  LIBRARY_OUTPUT_DIRECTORY_DEBUG          ${MI_BINARY_DIR}/python/mitsuba
+  LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ${MI_BINARY_DIR}/python/mitsuba
+  LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL     ${MI_BINARY_DIR}/python/mitsuba
+)
 
 nanobind_add_module(mitsuba_ext
   NB_DOMAIN drjit
