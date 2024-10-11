@@ -29,7 +29,7 @@ foreach (MI_VARIANT ${MI_VARIANTS})
 
   nanobind_add_module(${TARGET_NAME}
       NB_DOMAIN drjit
-      NB_STATIC
+      NB_SHARED
       ${MI_DIST_FLAGS}
       main_v.cpp
       ${CORE_PY_V_SRC}
@@ -59,7 +59,7 @@ endforeach()
 
 nanobind_add_module(mitsuba_ext
   NB_DOMAIN drjit
-  NB_STATIC
+  NB_SHARED
   ${MI_DIST_FLAGS}
   main.cpp
   ${CORE_PY_SRC}
@@ -68,7 +68,7 @@ nanobind_add_module(mitsuba_ext
 
 nanobind_add_module(mitsuba_alias
   NB_DOMAIN drjit
-  NB_STATIC
+  NB_SHARED
   ${MI_DIST_FLAGS}
   alias.cpp
 )
