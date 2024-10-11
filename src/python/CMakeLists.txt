@@ -69,6 +69,10 @@ set(nanobind_lib_name "${nanobind_lib_name}-${MI_NB_DOMAIN}") # Append domain na
 set_target_properties(${nanobind_lib_name}
   PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY                ${MI_BINARY_DIR}/python/mitsuba
+  LIBRARY_OUTPUT_DIRECTORY_RELEASE        ${MI_BINARY_DIR}/python/mitsuba
+  LIBRARY_OUTPUT_DIRECTORY_DEBUG          ${MI_BINARY_DIR}/python/mitsuba
+  LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ${MI_BINARY_DIR}/python/mitsuba
+  LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL     ${MI_BINARY_DIR}/python/mitsuba
   FOLDER python
 )
 install(TARGETS ${nanobind_lib_name}
