@@ -5,7 +5,7 @@ requires = [
     "drjit @ git+https://github.com/njroussel/drjit-fork@rami",
     "typing_extensions",
     "hatch-fancy-pypi-readme",
-    "wheel"
+    "wheel>=0.40"
 ]
 build-backend = "scikit_build_core.build"
 
@@ -75,6 +75,8 @@ repair-wheel-command = "delocate-wheel --require-archs {delocate_archs} -w {dest
 before-all = "yum install -y libatomic"
 
 repair-wheel-command = "python .github/workflows/tag_wheel_manylinux.py {wheel} {dest_dir}"
+
+repair-wheel-command = "my_var=$(python -m wheel tags --platform-tag manylinux_2_17_x86_64.manylinux2014_x86_64lol {wheel} | tail -1 | cat); cp $my_var {dest_dir}"
 
 [tool.pytest.ini_options]
 norecursedirs = [ "ext" ]
