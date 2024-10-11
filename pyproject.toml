@@ -10,9 +10,9 @@ build-backend = "scikit_build_core.build"
 
 
 [project]
-name = "Mitsuba"
+name = "throwawaycc0bird"
 dynamic = ["version", "readme"]
-description = "Mitsuba 3: A Retargetable Forward and Inverse Renderer"
+description = "Throwaway"
 readme = "README.md"
 dependencies = [
   "typing_extensions;python_version<\"3.11\"",
@@ -27,7 +27,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mitsuba-renderer/mitsuba3"
+Homepage = "https://github.com/njroussel/mitsuba3-fork"
 
 
 [tool.scikit-build]
