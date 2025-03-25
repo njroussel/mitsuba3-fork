@@ -2,7 +2,7 @@
 requires = [
     "scikit-build-core",
     "nanobind==2.5.0",
-    "drjit==1.0.5",
+    "drjit @ git+https://github.com/mitsuba-renderer/drjit@coopvec-wheels",
     "typing_extensions>=4.12",
     "hatch-fancy-pypi-readme",
 ]
